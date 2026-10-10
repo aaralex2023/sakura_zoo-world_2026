@@ -22,6 +22,8 @@ namespace ZooWorld.Bootstrap
             if (_animalsRoot == null)
                 throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no animals root reference.");
             if (_deathCounterView == null)
+                _deathCounterView = FindFirstObjectByType<DeathCounterView>();
+            if (_deathCounterView == null)
                 throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no death counter view reference.");
             if (_labelsCanvas == null)
                 throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no floating labels canvas reference.");
