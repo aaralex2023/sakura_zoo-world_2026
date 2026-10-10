@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SnakeRole
   m_EditorClassIdentifier:
   _displayName: Snake
-  _canEat: 0
+  _canEat: 1
