@@ -13,6 +13,7 @@ namespace ZooWorld.Bootstrap
         [SerializeField] private Camera _camera;
         [SerializeField] private Transform _animalsRoot;
         [SerializeField] private DeathCounterView _deathCounterView;
+        [SerializeField] private Canvas _labelsCanvas;
 
         public override void InstallBindings()
         {
@@ -22,6 +23,8 @@ namespace ZooWorld.Bootstrap
                 throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no animals root reference.");
             if (_deathCounterView == null)
                 throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no death counter view reference.");
+            if (_labelsCanvas == null)
+                throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no floating labels canvas reference.");
 
             SignalBusInstaller.Install(Container);
             Container.DeclareSignal<AnimalDiedSignal>();
@@ -39,6 +42,8 @@ namespace ZooWorld.Bootstrap
             Container.BindInstance(font).AsSingle();
             Container.BindInstance(_deathCounterView).AsSingle();
             Container.BindInterfacesTo<DeathCounterPresenter>().AsSingle();
+            Container.Bind<IFloatingLabelService>().To<FloatingLabelService>().AsSingle()
+                .WithArguments(_labelsCanvas, _camera, font);
         }
 
         private static TMP_FontAsset CreateUiFont()
