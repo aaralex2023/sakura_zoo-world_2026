@@ -1,7 +1,9 @@
 using System;
+using TMPro;
 using UnityEngine;
 using Zenject;
 using ZooWorld.FoodChain;
+using ZooWorld.UI;
 using ZooWorld.World;
 
 namespace ZooWorld.Bootstrap
@@ -10,6 +12,7 @@ namespace ZooWorld.Bootstrap
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private Transform _animalsRoot;
+        [SerializeField] private DeathCounterView _deathCounterView;
 
         public override void InstallBindings()
         {
@@ -17,6 +20,8 @@ namespace ZooWorld.Bootstrap
                 throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no camera reference.");
             if (_animalsRoot == null)
                 throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no animals root reference.");
+            if (_deathCounterView == null)
+                throw new InvalidOperationException($"{nameof(ZooSceneInstaller)} has no death counter view reference.");
 
             SignalBusInstaller.Install(Container);
             Container.DeclareSignal<AnimalDiedSignal>();
@@ -30,6 +35,18 @@ namespace ZooWorld.Bootstrap
             Container.Bind<IAnimalFactory>().To<AnimalFactory>().AsSingle().WithArguments(_animalsRoot);
             Container.Bind<IAnimalDespawner>().To<DestroyAnimalDespawner>().AsSingle();
             Container.BindInterfacesTo<AnimalSpawner>().AsSingle();
+            TMP_FontAsset font = CreateUiFont();
+            Container.BindInstance(font).AsSingle();
+            Container.BindInstance(_deathCounterView).AsSingle();
+            Container.BindInterfacesTo<DeathCounterPresenter>().AsSingle();
+        }
+
+        private static TMP_FontAsset CreateUiFont()
+        {
+            TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+            if (font == null)
+                throw new InvalidOperationException("Could not load the TextMeshPro default font asset.");
+            return font;
         }
     }
 }
