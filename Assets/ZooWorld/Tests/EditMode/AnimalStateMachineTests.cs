@@ -96,6 +96,26 @@ namespace ZooWorld.Tests
             Assert.That(_second.Predictions, Is.EqualTo(1));
         }
 
+        [Test]
+        public void DisabledComponentIsExcludedFromStateLifecycle()
+        {
+            _first.enabled = false;
+            _machine.Initialize(_context, _start);
+
+            _machine.LifeCycle(0.02f);
+            _machine.ForceSwitchState(_next);
+
+            Assert.That(_first.Setups, Is.Zero);
+            Assert.That(_first.Enters, Is.Zero);
+            Assert.That(_first.Ticks, Is.Zero);
+            Assert.That(_first.Exits, Is.Zero);
+            Assert.That(_first.Predictions, Is.Zero);
+            Assert.That(_second.Setups, Is.EqualTo(1));
+            Assert.That(_second.Enters, Is.EqualTo(1));
+            Assert.That(_second.Ticks, Is.EqualTo(1));
+            Assert.That(_second.Exits, Is.EqualTo(1));
+        }
+
         private GameObject CreateState(GameObject root, out AnimalStateId id)
         {
             id = ScriptableObject.CreateInstance<AnimalStateId>();

@@ -36,6 +36,9 @@ namespace ZooWorld.Animals
 
             foreach (Component component in GetComponents<Component>())
             {
+                if (component is Behaviour behaviour && !behaviour.isActiveAndEnabled)
+                    continue;
+
                 if (component is IAnimalContextUser contextUser)
                     contextUsers.Add(contextUser);
                 if (component is IAnimalStateEnterListener enterListener)
