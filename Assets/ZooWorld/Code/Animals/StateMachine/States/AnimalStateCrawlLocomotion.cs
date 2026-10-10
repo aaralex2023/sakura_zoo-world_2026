@@ -34,10 +34,11 @@ namespace ZooWorld.Animals
                 return;
             heading.Normalize();
 
-            Vector3 currentVelocity = Vector3.ProjectOnPlane(_state.Body.linearVelocity, Vector3.up);
+            Vector3 velocity = _state.Body.linearVelocity;
+            Vector3 currentVelocity = Vector3.ProjectOnPlane(velocity, Vector3.up);
             Vector3 desiredVelocity = heading * _config.Speed;
             Vector3 nextVelocity = Vector3.MoveTowards(currentVelocity, desiredVelocity, _config.Acceleration * dt);
-            _state.Body.AddForce(nextVelocity - currentVelocity, ForceMode.VelocityChange);
+            _state.Body.linearVelocity = new Vector3(nextVelocity.x, velocity.y, nextVelocity.z);
             _state.Body.MoveRotation(Quaternion.LookRotation(heading, Vector3.up));
         }
     }
