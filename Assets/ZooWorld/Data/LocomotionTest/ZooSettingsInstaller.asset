@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e198280dd1604a7eb0f700d82a2c6877, type: 3}
+  m_Name: LocomotionZooSettingsInstaller
+  m_EditorClassIdentifier:
+  _spawnSettings: {fileID: 11400000, guid: 1b1c2d8744014e368d416e7d94834ef4, type: 2}
+  _animalCatalog: {fileID: 11400000, guid: 59ff377afb9c4269bcba5b1ee797a574, type: 2}

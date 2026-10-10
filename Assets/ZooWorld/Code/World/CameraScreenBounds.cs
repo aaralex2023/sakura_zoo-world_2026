@@ -12,10 +12,9 @@ namespace ZooWorld.World
         {
             get
             {
-                float height = _camera.orthographicSize * 2f;
-                float width = height * _camera.aspect;
-                Vector3 position = _camera.transform.position;
-                return new Rect(position.x - width * 0.5f, position.z - height * 0.5f, width, height);
+                Vector3 bottomLeft = GetGroundPoint(0f, 0f);
+                Vector3 topRight = GetGroundPoint(1f, 1f);
+                return Rect.MinMaxRect(bottomLeft.x, bottomLeft.z, topRight.x, topRight.z);
             }
         }
 
@@ -23,14 +22,27 @@ namespace ZooWorld.World
         {
             _camera = camera != null ? camera : throw new ArgumentNullException(nameof(camera));
             _random = random ?? throw new ArgumentNullException(nameof(random));
-            if (!_camera.orthographic)
-                throw new ArgumentException("Screen bounds require an orthographic camera.", nameof(camera));
 
             Transform cameraTransform = _camera.transform;
             if (Vector3.Dot(cameraTransform.forward, Vector3.down) < 0.999f ||
                 Vector3.Dot(cameraTransform.right, Vector3.right) < 0.999f ||
                 Vector3.Dot(cameraTransform.up, Vector3.forward) < 0.999f)
                 throw new ArgumentException("Screen bounds require a camera facing straight down with no roll or yaw.", nameof(camera));
+            if (cameraTransform.position.y <= 0f)
+                throw new ArgumentException("Screen bounds require a camera above the ground plane.", nameof(camera));
+        }
+
+        private Vector3 GetGroundPoint(float viewportX, float viewportY)
+        {
+            Ray ray = _camera.ViewportPointToRay(new Vector3(viewportX, viewportY, 0f));
+            if (ray.direction.y >= 0f)
+                throw new InvalidOperationException("The camera frustum does not intersect the ground plane.");
+
+            float distance = -ray.origin.y / ray.direction.y;
+            if (distance <= 0f)
+                throw new InvalidOperationException("The camera frustum does not intersect the ground plane in front of the camera.");
+
+            return ray.GetPoint(distance);
         }
 
         public bool Contains(Vector3 position, float inset = 0f)
