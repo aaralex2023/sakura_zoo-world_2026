@@ -8,7 +8,7 @@
 /[Mm]emoryCaptures/
 /[Rr]ecordings/
 /.vs/
-/.idea/
+.idea/
 /.vscode/
 *.csproj
 *.sln
