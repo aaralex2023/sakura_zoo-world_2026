@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Zenject;
+using ZooWorld.Animals;
 using ZooWorld.FoodChain;
 
 namespace ZooWorld.UI

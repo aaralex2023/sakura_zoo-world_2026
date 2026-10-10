@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using Zenject;
+using ZooWorld.Animals;
 
 namespace ZooWorld.UI
 {
