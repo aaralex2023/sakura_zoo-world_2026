@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 11400004}
   - component: {fileID: 11400005}
   - component: {fileID: 11400006}
+  - component: {fileID: 11400007}
   m_Layer: 6
   m_Name: Frog
   m_TagString: Untagged
@@ -172,6 +173,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d93ca62a3f3141de8854f6abb8bb26a7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &11400007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b5927b83fdb46c28724ff2e997ed970, type: 3}
   m_Name:
   m_EditorClassIdentifier:
 --- !u!1 &100001
