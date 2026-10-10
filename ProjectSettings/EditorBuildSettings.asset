@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/ZooWorld/Scenes/LocomotionTest.unity
+    path: Assets/ZooWorld/Scenes/Playground.unity
     guid: 5fccbc7d841f4c9f87005d94cf53e6c3
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

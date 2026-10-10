@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0293914342d49d0a85ad1dfa966a751, type: 3}
-  m_Name: LocomotionAnimalCatalog
-  m_EditorClassIdentifier:
+  m_Name: AnimalCatalog
+  m_EditorClassIdentifier: 
   _animals:
   - {fileID: 11400000, guid: a321f6ee383b4dbea77dc4bfaa1fffe5, type: 2}
   - {fileID: 11400000, guid: 70ce7ab5a99447ea9e73d7f66c36eb4f, type: 2}
