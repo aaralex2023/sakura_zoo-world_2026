@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7195b8b22b0841bea4fef5b744d190e5, type: 3}
   m_Name: SpawnSettings
   m_EditorClassIdentifier: 
-  _intervalRange: {x: 2, y: 3}
+  _intervalRange: {x: 1, y: 2}
   _spawnInset: 1.5
   _spawnHeight: 0.45
   _blockingMask:
