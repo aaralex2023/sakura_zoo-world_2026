@@ -72,7 +72,7 @@ namespace ZooWorld.Animals
                 AnimalContext context = new(this, _runtimeState, _configs);
 
                 _dispatcher.Init(context);
-                foreach (IAnimalContextUser contextUser in ComponentExtractorUtil.ExtractDirectChildren<IAnimalContextUser>(gameObject))
+                foreach (IAnimalContextUser contextUser in ComponentExtractorUtil.ExtractDirectChildren<IAnimalContextUser>(gameObject, _dispatcher.ReactorsRoot))
                     contextUser.SetupContext(context);
 
                 _stateMachine.Initialize(context, _startState);

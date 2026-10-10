@@ -12,6 +12,8 @@ namespace ZooWorld.Animals
         private IAnimalEatenListener[] _eatenListeners = Array.Empty<IAnimalEatenListener>();
         private bool _isInitialized;
 
+        public GameObject ReactorsRoot => _root;
+
         public void Init(AnimalContext context)
         {
             if (_isInitialized)

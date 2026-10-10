@@ -5,7 +5,7 @@ namespace ZooWorld.Animals
 {
     public static class ComponentExtractorUtil
     {
-        public static T[] ExtractDirectChildren<T>(GameObject root) where T : class
+        public static T[] ExtractDirectChildren<T>(GameObject root, GameObject excludedDirectChild = null) where T : class
         {
             if (root == null)
                 throw new System.ArgumentNullException(nameof(root));
@@ -17,7 +17,7 @@ namespace ZooWorld.Animals
             for (int i = 0; i < rootTransform.childCount; i++)
             {
                 Transform child = rootTransform.GetChild(i);
-                if (child.gameObject.activeInHierarchy)
+                if (child.gameObject != excludedDirectChild && child.gameObject.activeInHierarchy)
                     AddFrom(child.gameObject, components);
             }
 
