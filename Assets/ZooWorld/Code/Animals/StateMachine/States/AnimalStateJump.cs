@@ -50,7 +50,7 @@ namespace ZooWorld.Animals
             float horizontalSpeed = _config.Distance / _config.AirTime;
             float verticalSpeed = gravity * _config.AirTime * 0.5f;
             _state.Body.MoveRotation(Quaternion.LookRotation(heading, Vector3.up));
-            _state.Body.velocity = heading * horizontalSpeed + Vector3.up * verticalSpeed;
+            _state.Body.linearVelocity = heading * horizontalSpeed + Vector3.up * verticalSpeed;
             _hasLeftGround = false;
             _landed = false;
         }
@@ -76,7 +76,7 @@ namespace ZooWorld.Animals
             if (!_groundContact.IsGrounded)
                 return;
 
-            _state.Body.velocity = Vector3.zero;
+            _state.Body.linearVelocity = Vector3.zero;
             _state.Body.angularVelocity = Vector3.zero;
             _landed = true;
         }

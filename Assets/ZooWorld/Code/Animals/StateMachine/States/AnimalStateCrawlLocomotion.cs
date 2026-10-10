@@ -34,7 +34,7 @@ namespace ZooWorld.Animals
                 return;
             heading.Normalize();
 
-            Vector3 currentVelocity = Vector3.ProjectOnPlane(_state.Body.velocity, Vector3.up);
+            Vector3 currentVelocity = Vector3.ProjectOnPlane(_state.Body.linearVelocity, Vector3.up);
             Vector3 desiredVelocity = heading * _config.Speed;
             Vector3 nextVelocity = Vector3.MoveTowards(currentVelocity, desiredVelocity, _config.Acceleration * dt);
             _state.Body.AddForce(nextVelocity - currentVelocity, ForceMode.VelocityChange);
