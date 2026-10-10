@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   _spawnSettings: {fileID: 11400000, guid: 1b1c2d8744014e368d416e7d94834ef4, type: 2}
   _animalCatalog: {fileID: 11400000, guid: 59ff377afb9c4269bcba5b1ee797a574, type: 2}
+  _foodChainSettings: {fileID: 11400000, guid: 943dd8a45b214d728abf2454e1088667, type: 2}
