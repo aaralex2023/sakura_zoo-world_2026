@@ -14,6 +14,7 @@ namespace ZooWorld.Animals
         private IAnimalStatePredictor[] _predictors = Array.Empty<IAnimalStatePredictor>();
         private AnimalRuntimeState _runtimeState;
         private bool _isPrepared;
+        private int _exitVersion;
 
         public AnimalStateId Id => _id;
 
@@ -67,6 +68,7 @@ namespace ZooWorld.Animals
         public void Exit()
         {
             EnsurePrepared();
+            _exitVersion++;
             foreach (IAnimalStateExitListener listener in _exitListeners)
                 listener.OnExit();
 
@@ -74,15 +76,17 @@ namespace ZooWorld.Animals
                 predictor.TryPopNextState(out _);
         }
 
-        public void Tick(float dt)
+        public bool Tick(float dt)
         {
             EnsurePrepared();
+            int exitVersion = _exitVersion;
             foreach (IAnimalStateTickListener listener in _tickListeners)
             {
-                if (_runtimeState.IsDead)
-                    return;
+                if (_runtimeState.IsDead || _exitVersion != exitVersion)
+                    return false;
                 listener.OnTick(dt);
             }
+            return !_runtimeState.IsDead && _exitVersion == exitVersion;
         }
 
         public bool TryPopNextState(out AnimalStateId state)

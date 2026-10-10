@@ -4,7 +4,8 @@
   "references": [
     "ZooWorld.Runtime",
     "UnityEngine.TestRunner",
-    "UnityEditor.TestRunner"
+    "UnityEditor.TestRunner",
+    "ZooWorld.Tests.Support"
   ],
   "includePlatforms": [
     "Editor"

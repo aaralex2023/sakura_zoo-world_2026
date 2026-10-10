@@ -56,7 +56,8 @@ namespace ZooWorld.Animals
                 return;
 
             AnimalStateNode tickingNode = _activeNode;
-            tickingNode.Tick(dt);
+            if (!tickingNode.Tick(dt))
+                return;
             if (_runtimeState.IsDead || _activeNode != tickingNode || !tickingNode.TryPopNextState(out AnimalStateId nextState))
                 return;
 

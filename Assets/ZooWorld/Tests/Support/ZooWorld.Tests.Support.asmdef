@@ -1,0 +1,11 @@
+{
+  "name": "ZooWorld.Tests.Support",
+  "rootNamespace": "ZooWorld.Tests",
+  "references": [
+    "ZooWorld.Runtime"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ]
+}
