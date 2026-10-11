@@ -32,9 +32,6 @@ namespace ZooWorld.Bootstrap
             Container.DeclareSignal<AnimalDiedSignal>();
 
             Container.Bind<IRandom>().To<UnityRandom>().AsSingle();
-            Container.Bind<IEncounterRule>().To<NoEatersRule>().AsSingle();
-            Container.Bind<IEncounterRule>().To<SingleEaterRule>().AsSingle();
-            Container.Bind<IEncounterRule>().To<RankDuelRule>().AsSingle();
             Container.Bind<IEncounterResolver>().To<EncounterResolver>().AsSingle();
             Container.BindInterfacesTo<CameraScreenBounds>().AsSingle().WithArguments(_camera);
             Container.Bind<IAnimalFactory>().To<AnimalFactory>().AsSingle().WithArguments(_animalsRoot);

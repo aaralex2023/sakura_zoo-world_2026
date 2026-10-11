@@ -1,7 +1,9 @@
+using ZooWorld.Animals;
+
 namespace ZooWorld.FoodChain
 {
     public interface IEncounterResolver
     {
-        EncounterVerdict Resolve(in Encounter encounter);
+        bool TryResolve(IAnimal a, IAnimal b, out IAnimal eater, out IAnimal victim);
     }
 }

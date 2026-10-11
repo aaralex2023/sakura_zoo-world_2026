@@ -1,49 +1,63 @@
 using System;
-using System.Collections.Generic;
 using ZooWorld.Animals;
+using ZooWorld.World;
 
 namespace ZooWorld.FoodChain
 {
     public sealed class EncounterResolver : IEncounterResolver
     {
-        private readonly IEncounterRule[] _rules;
+        private readonly AnimalVarId _rankVar;
+        private readonly IRandom _random;
 
-        public EncounterResolver(List<IEncounterRule> rules)
+        public EncounterResolver(FoodChainSettings settings, IRandom random)
         {
-            if (rules == null)
-                throw new ArgumentNullException(nameof(rules));
-
-            _rules = rules.ToArray();
-            for (int i = 0; i < _rules.Length; i++)
-            {
-                if (_rules[i] == null)
-                    throw new ArgumentException("Encounter rules cannot contain null entries.", nameof(rules));
-            }
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
+            _rankVar = settings.RankVar != null
+                ? settings.RankVar
+                : throw new ArgumentException($"{nameof(FoodChainSettings)} has no rank variable.", nameof(settings));
+            _random = random ?? throw new ArgumentNullException(nameof(random));
         }
 
-        public EncounterVerdict Resolve(in Encounter encounter)
+        public bool TryResolve(IAnimal a, IAnimal b, out IAnimal eater, out IAnimal victim)
         {
-            foreach (IEncounterRule rule in _rules)
-            {
-                if (!rule.TryResolve(encounter, out EncounterVerdict verdict))
-                    continue;
-                if (verdict.Kind == EncounterKind.Bounce)
-                    return verdict;
-                if (verdict.Kind != EncounterKind.Eat ||
-                    !ContainsParticipant(encounter, verdict.Eater) ||
-                    !ContainsParticipant(encounter, verdict.Victim) ||
-                    ReferenceEquals(verdict.Eater, verdict.Victim))
-                    throw new InvalidOperationException($"Encounter rule '{rule.GetType().Name}' returned an invalid verdict.");
+            if (a == null)
+                throw new ArgumentNullException(nameof(a));
+            if (b == null)
+                throw new ArgumentNullException(nameof(b));
+            if (ReferenceEquals(a, b))
+                throw new ArgumentException("An encounter requires two different animals.", nameof(b));
 
-                return verdict;
+            FoodChainRoleId aRole = GetRole(a);
+            FoodChainRoleId bRole = GetRole(b);
+            if (!aRole.CanEat && !bRole.CanEat)
+            {
+                eater = null;
+                victim = null;
+                return false;
             }
 
-            return EncounterVerdict.Bounce();
+            if (aRole.CanEat != bRole.CanEat)
+            {
+                eater = aRole.CanEat ? a : b;
+                victim = aRole.CanEat ? b : a;
+                return true;
+            }
+
+            double aRank = Math.Round(a.Vars.Get(_rankVar));
+            double bRank = Math.Round(b.Vars.Get(_rankVar));
+            bool aWins = aRank == bRank ? _random.Chance(0.5f) : aRank > bRank;
+            eater = aWins ? a : b;
+            victim = aWins ? b : a;
+            return true;
         }
 
-        private static bool ContainsParticipant(in Encounter encounter, IAnimal animal)
+        private static FoodChainRoleId GetRole(IAnimal animal)
         {
-            return ReferenceEquals(encounter.A, animal) || ReferenceEquals(encounter.B, animal);
+            if (!animal.Configs.TryGet(out FoodChainConfig config) || config.Role == null)
+                throw new InvalidOperationException($"Animal '{animal.Transform.name}' has no food-chain role.");
+
+            return config.Role;
         }
     }
 }

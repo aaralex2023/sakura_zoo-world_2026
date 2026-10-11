@@ -40,14 +40,12 @@ namespace ZooWorld.FoodChain
             if (other.IsDead || _animal.Body.GetInstanceID() > other.Body.GetInstanceID())
                 return;
 
-            Encounter encounter = new(_animal, other);
-            EncounterVerdict verdict = _resolver.Resolve(encounter);
-            if (verdict.Kind != EncounterKind.Eat || !verdict.Victim.TryDie(verdict.Eater))
+            if (!_resolver.TryResolve(_animal, other, out IAnimal eater, out IAnimal victim) || !victim.TryDie(eater))
                 return;
 
-            verdict.Eater.NotifyAte(verdict.Victim);
-            verdict.Victim.NotifyEaten(verdict.Eater);
-            _despawner.Despawn(verdict.Victim);
+            eater.NotifyAte(victim);
+            victim.NotifyEaten(eater);
+            _despawner.Despawn(victim);
         }
     }
 }
