@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace ZooWorld.Animals
 {
-    public sealed class AnimalSwitchOnObstacleContact : MonoBehaviour, IAnimalContextUser
+    public sealed class AnimalSetVarFlagObstacleContact : MonoBehaviour, IAnimalContextUser
     {
         [SerializeField] private LayerMask _obstacleMask = 1 << 8;
-        [SerializeField] private AnimalStateId _movementState;
-        [SerializeField] private AnimalStateId _waitState;
+        [SerializeField] private AnimalVarId _flagId;
 
         private AnimalRuntimeState _state;
 
@@ -17,8 +16,8 @@ namespace ZooWorld.Animals
                 throw new ArgumentNullException(nameof(context));
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
-            if (_obstacleMask.value == 0 || _movementState == null || _waitState == null || _movementState == _waitState)
-                throw new InvalidOperationException($"'{name}' requires an obstacle mask and distinct movement and wait states.");
+            if (_obstacleMask.value == 0 || _flagId == null)
+                throw new InvalidOperationException($"'{name}' requires an obstacle mask and a variable flag.");
 
             _state = context.State;
         }
@@ -40,14 +39,14 @@ namespace ZooWorld.Animals
 
             for (int i = 0; i < collision.contactCount; i++)
             {
-                if (TryWait(collision.collider, collision.GetContact(i).normal))
+                if (TrySetFlag(collision.collider, collision.GetContact(i).normal))
                     return;
             }
         }
 
-        private bool TryWait(Collider obstacle, Vector3 normal)
+        private bool TrySetFlag(Collider obstacle, Vector3 normal)
         {
-            if (_state.IsDead || !_state.IsInState(_movementState) ||
+            if (_state.IsDead ||
                 (_obstacleMask.value & (1 << obstacle.gameObject.layer)) == 0)
                 return false;
 
@@ -55,7 +54,7 @@ namespace ZooWorld.Animals
             if (normal.sqrMagnitude <= 0.0001f || Vector3.Dot(_state.Heading, normal.normalized) >= -0.05f)
                 return false;
 
-            _state.ForceSwitchTo(_waitState);
+            _state.Vars.Set(_flagId, 0d);
             return true;
         }
     }

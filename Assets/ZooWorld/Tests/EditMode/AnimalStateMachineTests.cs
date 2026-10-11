@@ -17,6 +17,7 @@ namespace ZooWorld.Tests
         private StateLifecycleProbe _first;
         private StateLifecycleProbe _second;
         private StateLifecycleProbe _nextProbe;
+        private AnimalVarId _contactFlag;
 
         [SetUp]
         public void SetUp()
@@ -119,25 +120,32 @@ namespace ZooWorld.Tests
         [Test]
         public void WallContactStopsMovementWithoutRestartingWait()
         {
-            AnimalSwitchOnObstacleContact contact = CreateWallResponse(out Collider wall);
+            AnimalSetVarFlagObstacleContact contact = CreateWallResponse(out Collider wall);
             _context.State.Heading = Vector3.right;
             _context.State.Body.linearVelocity = new Vector3(2f, -1f, 0f);
 
             Assert.That(TouchWall(contact, wall, Vector3.left), Is.True);
+            Assert.That(_machine.IsInState(_start), Is.True);
+            _machine.LifeCycle(0.02f);
             Assert.That(_machine.IsInState(_next), Is.True);
             Assert.That(_context.State.Body.linearVelocity, Is.EqualTo(new Vector3(0f, -1f, 0f)));
-            Assert.That(TouchWall(contact, wall, Vector3.left), Is.False);
+            Assert.That(TouchWall(contact, wall, Vector3.left), Is.True);
+            _machine.LifeCycle(0.02f);
             Assert.That(_nextProbe.Enters, Is.EqualTo(1));
 
             _machine.ForceSwitchState(_start);
+            Assert.That(_context.State.Vars.TryGet(_contactFlag, out _), Is.False);
+            _machine.LifeCycle(0.02f);
+            Assert.That(_machine.IsInState(_start), Is.True);
             Assert.That(TouchWall(contact, wall, Vector3.left), Is.True);
+            _machine.LifeCycle(0.02f);
             Assert.That(_nextProbe.Enters, Is.EqualTo(2));
         }
 
         [Test]
         public void SnakeCanMoveAwayWhileStillTouchingWall()
         {
-            AnimalSwitchOnObstacleContact contact = CreateWallResponse(out Collider wall);
+            AnimalSetVarFlagObstacleContact contact = CreateWallResponse(out Collider wall);
             _context.State.Heading = Vector3.left;
 
             Assert.That(TouchWall(contact, wall, Vector3.left), Is.False);
@@ -147,7 +155,7 @@ namespace ZooWorld.Tests
         [Test]
         public void GroundAndOtherAnimalsDoNotTriggerWallWait()
         {
-            AnimalSwitchOnObstacleContact contact = CreateWallResponse(out Collider wall);
+            AnimalSetVarFlagObstacleContact contact = CreateWallResponse(out Collider wall);
             _context.State.Heading = Vector3.right;
 
             Assert.That(TouchWall(contact, wall, Vector3.up), Is.False);
@@ -159,7 +167,7 @@ namespace ZooWorld.Tests
         [Test]
         public void DeadAnimalIgnoresWallContacts()
         {
-            AnimalSwitchOnObstacleContact contact = CreateWallResponse(out Collider wall);
+            AnimalSetVarFlagObstacleContact contact = CreateWallResponse(out Collider wall);
             _context.State.Heading = Vector3.right;
             _context.State.MarkDead();
 
@@ -167,11 +175,15 @@ namespace ZooWorld.Tests
             Assert.That(_nextProbe.Enters, Is.Zero);
         }
 
-        private AnimalSwitchOnObstacleContact CreateWallResponse(out Collider wall)
+        private AnimalSetVarFlagObstacleContact CreateWallResponse(out Collider wall)
         {
-            AnimalSwitchOnObstacleContact contact = _machine.gameObject.AddComponent<AnimalSwitchOnObstacleContact>();
-            SetField(contact, "_movementState", _start);
-            SetField(contact, "_waitState", _next);
+            AnimalSetVarFlagObstacleContact contact = _machine.gameObject.AddComponent<AnimalSetVarFlagObstacleContact>();
+            _contactFlag = ScriptableObject.CreateInstance<AnimalVarId>();
+            _objects.Add(_contactFlag);
+            SetField(contact, "_flagId", _contactFlag);
+            AnimalStateSwitchByVarFlag predictor = _startObject.AddComponent<AnimalStateSwitchByVarFlag>();
+            SetField(predictor, "_flagId", _contactFlag);
+            SetField(predictor, "_nextState", _next);
             contact.SetupContext(_context);
             _nextProbe.gameObject.AddComponent<AnimalStateWait>();
             _machine.Initialize(_context, _start);
@@ -182,10 +194,10 @@ namespace ZooWorld.Tests
             return contact;
         }
 
-        private static bool TouchWall(AnimalSwitchOnObstacleContact contact, Collider wall, Vector3 normal)
+        private static bool TouchWall(AnimalSetVarFlagObstacleContact contact, Collider wall, Vector3 normal)
         {
-            return (bool)typeof(AnimalSwitchOnObstacleContact)
-                .GetMethod("TryWait", BindingFlags.Instance | BindingFlags.NonPublic)
+            return (bool)typeof(AnimalSetVarFlagObstacleContact)
+                .GetMethod("TrySetFlag", BindingFlags.Instance | BindingFlags.NonPublic)
                 .Invoke(contact, new object[] { wall, normal });
         }
 

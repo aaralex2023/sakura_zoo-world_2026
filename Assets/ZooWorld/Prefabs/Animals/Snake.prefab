@@ -535,6 +535,7 @@ GameObject:
   - component: {fileID: 11400023}
   - component: {fileID: 11400040}
   - component: {fileID: 11400041}
+  - component: {fileID: 11400998}
   m_Layer: 0
   m_Name: StateSnakeMove
   m_TagString: Untagged
@@ -908,5 +909,18 @@ MonoBehaviour:
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 256
-  _movementState: {fileID: 11400000, guid: e7807a6144f94673b3e9b3c4a066dbce, type: 2}
-  _waitState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
+  _flagId: {fileID: 11400000, guid: cca9c3e8db36477090aaf6c091b98125, type: 2}
+--- !u!114 &11400998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af8dadb708cb4e53a047f28ac5f0219c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _flagId: {fileID: 11400000, guid: cca9c3e8db36477090aaf6c091b98125, type: 2}
+  _nextState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
