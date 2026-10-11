@@ -175,6 +175,20 @@ namespace ZooWorld.Tests
             Assert.That(_nextProbe.Enters, Is.Zero);
         }
 
+        [TestCase(0d)]
+        [TestCase(1d)]
+        [TestCase(-5d)]
+        public void FlagPresenceRequestsTransitionRegardlessOfValue(double value)
+        {
+            CreateWallResponse(out _);
+            _context.State.Vars.Set(_contactFlag, value);
+
+            _machine.LifeCycle(0.02f);
+
+            Assert.That(_machine.IsInState(_next), Is.True);
+            Assert.That(_context.State.Vars.TryGet(_contactFlag, out _), Is.False);
+        }
+
         private AnimalSetVarFlagObstacleContact CreateWallResponse(out Collider wall)
         {
             AnimalSetVarFlagObstacleContact contact = _machine.gameObject.AddComponent<AnimalSetVarFlagObstacleContact>();
