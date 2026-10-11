@@ -22,7 +22,7 @@ namespace ZooWorld.Animals
         private Collider _lastObstacleCollider;
         private Vector3 _lastObstacleNormal;
 
-        public bool HasObstaclePriority => _hasObstaclePriority;
+        public bool IsReturning => _isReturning;
 
         [Inject]
         private void Construct(IScreenBounds screenBounds, IRandom random)
@@ -93,7 +93,7 @@ namespace ZooWorld.Animals
         {
             EnsureReady();
             if (_isReturning)
-                return true;
+                return !_screenBounds.Contains(_state.Transform.position, _screenReturnConfig.InsideMargin);
 
             return !_screenBounds.Contains(_state.Transform.position, _screenReturnConfig.OutsideMargin);
         }
