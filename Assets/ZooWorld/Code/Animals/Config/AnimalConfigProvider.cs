@@ -6,6 +6,8 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalConfigProvider : MonoBehaviour, IAnimalConfigProvider
     {
+        [SerializeField] private GameObject _configsRoot;
+
         private readonly Dictionary<Type, IAnimalConfig> _configs = new();
         private bool _isInitialized;
 
@@ -13,10 +15,15 @@ namespace ZooWorld.Animals
         {
             if (_isInitialized)
                 throw new InvalidOperationException($"{nameof(AnimalConfigProvider)} on '{name}' was initialized more than once.");
+            if (_configsRoot == null)
+                throw new InvalidOperationException($"{nameof(AnimalConfigProvider)} on '{name}' has no configs root reference.");
 
-            AAnimalConfigComponent[] components = ComponentExtractorUtil.ExtractDirectChildren<AAnimalConfigComponent>(gameObject);
+            AAnimalConfigComponent[] components = _configsRoot.GetComponents<AAnimalConfigComponent>();
             foreach (AAnimalConfigComponent component in components)
             {
+                if (!component.isActiveAndEnabled)
+                    continue;
+
                 component.GetConfig(out Type type, out IAnimalConfig config);
                 if (config == null)
                     throw new InvalidOperationException($"Config on '{component.name}' is null.");
