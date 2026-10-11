@@ -202,7 +202,6 @@ GameObject:
   - component: {fileID: 11400014}
   - component: {fileID: 11400015}
   - component: {fileID: 11400016}
-  - component: {fileID: 11400017}
   m_Layer: 0
   m_Name: Config
   m_TagString: Untagged
@@ -303,6 +302,10 @@ MonoBehaviour:
     _values:
     - _id: {fileID: 11400000, guid: 25835f35d2a84b9c8888b602c5f71d9f, type: 2}
       _value: 1
+    - _id: {fileID: 11400000, guid: b171dbe721b942d2adf93201d4537f85, type: 2}
+      _value: 4
+    - _id: {fileID: 11400000, guid: ce6a81f9a3234c0185c91502f12593e5, type: 2}
+      _value: 0.35
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,20 +322,6 @@ MonoBehaviour:
     _text: Tasty!
     _duration: 1.25
     _screenOffset: {x: 0, y: -40}
---- !u!114 &11400017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8926deee69a4d469d41394a6a3a74fa, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  _config:
-    _duration: 0.35
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,6 +631,7 @@ GameObject:
   - component: {fileID: 400009}
   - component: {fileID: 11400025}
   - component: {fileID: 11400026}
+  - component: {fileID: 11400042}
   m_Layer: 0
   m_Name: StateWait
   m_TagString: Untagged
@@ -689,7 +679,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0ed54e6f5c40a59fef0b34b7287621, type: 3}
   m_Name:
   m_EditorClassIdentifier:
+--- !u!114 &11400042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102e465335d54b10a3b0f779ce3461ba, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
   _nextState: {fileID: 11400000, guid: 2a89d94b2d9042a299d2fb33c55eeaf5, type: 2}
+  _timerId: {fileID: 11400000, guid: ce6a81f9a3234c0185c91502f12593e5, type: 2}
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0
