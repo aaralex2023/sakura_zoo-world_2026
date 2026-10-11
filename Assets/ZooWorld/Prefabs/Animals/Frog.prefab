@@ -544,6 +544,7 @@ GameObject:
   - component: {fileID: 11400023}
   - component: {fileID: 11400028}
   - component: {fileID: 11400029}
+  - component: {fileID: 11400030}
   m_Layer: 0
   m_Name: StateFrogJump
   m_TagString: Untagged
@@ -608,6 +609,18 @@ MonoBehaviour:
   _groundContact: {fileID: 11400006}
   _minimumJumpDuration: 0.2
 
+--- !u!114 &11400030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6426b2bcba7a4b9098ddf546a7ab2e01, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &100007
 GameObject:
   m_ObjectHideFlags: 0
