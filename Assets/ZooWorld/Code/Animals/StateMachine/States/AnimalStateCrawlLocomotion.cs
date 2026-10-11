@@ -11,7 +11,6 @@ namespace ZooWorld.Animals
 
         private AnimalRuntimeState _state;
         private CrawlLocomotionConfig _config;
-        private float _timeRemaining;
         private bool _transitionRequested;
 
         public void SetupContext(AnimalContext context)
@@ -26,10 +25,9 @@ namespace ZooWorld.Animals
                 throw new InvalidOperationException($"'{name}' has no heading selector reference.");
             if (!context.Configs.TryGet(out _config))
                 throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has no CrawlLocomotionConfig.");
-            if (_config.Speed <= 0f || _config.Acceleration <= 0f || _config.Duration <= 0f ||
+            if (_config.Speed <= 0f || _config.Acceleration <= 0f ||
                 float.IsNaN(_config.Speed) || float.IsInfinity(_config.Speed) ||
-                float.IsNaN(_config.Acceleration) || float.IsInfinity(_config.Acceleration) ||
-                float.IsNaN(_config.Duration) || float.IsInfinity(_config.Duration))
+                float.IsNaN(_config.Acceleration) || float.IsInfinity(_config.Acceleration))
                 throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has invalid crawl locomotion settings.");
 
             _state = context.State;
@@ -37,7 +35,6 @@ namespace ZooWorld.Animals
 
         public void OnEnter()
         {
-            _timeRemaining = _config.Duration;
             _transitionRequested = false;
         }
 
@@ -63,15 +60,7 @@ namespace ZooWorld.Animals
             _state.Body.linearVelocity = new Vector3(nextVelocity.x, velocity.y, nextVelocity.z);
             _state.Body.MoveRotation(Quaternion.LookRotation(heading, Vector3.up));
 
-            bool shouldReturnToScreen = _headingSelector.ShouldReturnToScreen();
-            if (shouldReturnToScreen != _headingSelector.IsReturning)
-            {
-                _transitionRequested = true;
-                return;
-            }
-
-            _timeRemaining -= dt;
-            if (_timeRemaining <= 0f)
+            if (_headingSelector.ShouldReturnToScreen() != _headingSelector.IsReturning)
                 _transitionRequested = true;
         }
 

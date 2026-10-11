@@ -110,7 +110,7 @@ namespace ZooWorld.Animals
                     state = requestedState;
                     found = true;
                 }
-                else
+                else if (requestedState != state)
                 {
 #if UNITY_EDITOR
                     Debug.LogWarning($"Multiple transition requests were raised by state '{name}'. The first component request wins.", this);

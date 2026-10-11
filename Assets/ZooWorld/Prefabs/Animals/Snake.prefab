@@ -268,7 +268,6 @@ MonoBehaviour:
   _config:
     _speed: 2
     _acceleration: 6
-    _duration: 4
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -536,6 +535,7 @@ GameObject:
   - component: {fileID: 400005}
   - component: {fileID: 11400021}
   - component: {fileID: 11400023}
+  - component: {fileID: 11400040}
   m_Layer: 0
   m_Name: StateSnakeMove
   m_TagString: Untagged
@@ -585,6 +585,20 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   _waitState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
   _headingSelector: {fileID: 11400005}
+--- !u!114 &11400040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102e465335d54b10a3b0f779ce3461ba, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _nextState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
+  _timerId: {fileID: 11400000, guid: b171dbe721b942d2adf93201d4537f85, type: 2}
 --- !u!1 &100007
 GameObject:
   m_ObjectHideFlags: 0
