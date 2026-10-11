@@ -85,6 +85,83 @@ namespace ZooWorld.Tests
         }
 
         [Test]
+        public void MissingTimerIdInInactiveStateFailsDuringInitialization()
+        {
+            var transition = _nextProbe.gameObject.AddComponent<AnimalStateSwitchByVariableTimer>();
+            SetField(transition, "_nextState", _start);
+
+            var exception = Assert.Throws<System.InvalidOperationException>(() => _machine.Initialize(_context, _start));
+
+            Assert.That(exception.Message, Does.Contain("no timer variable ID"));
+            Assert.That(_first.Enters, Is.Zero);
+        }
+
+        [Test]
+        public void MissingTimerValueInInactiveStateFailsDuringInitialization()
+        {
+            AnimalVarId timerId = CreateTimer(_nextProbe.gameObject, _start);
+            timerId.name = "MissingDuration";
+
+            var exception = Assert.Throws<System.InvalidOperationException>(() => _machine.Initialize(_context, _start));
+
+            Assert.That(exception.Message, Does.Contain("MissingDuration"));
+            Assert.That(_first.Enters, Is.Zero);
+        }
+
+        [TestCase(-1d)]
+        [TestCase(double.NaN)]
+        [TestCase(double.PositiveInfinity)]
+        [TestCase(double.NegativeInfinity)]
+        public void InvalidTimerDurationFailsDuringInitialization(double duration)
+        {
+            AnimalVarId timerId = CreateTimer(_nextProbe.gameObject, _start);
+            _context.State.Vars.Set(timerId, duration);
+
+            Assert.Throws<System.InvalidOperationException>(() => _machine.Initialize(_context, _start));
+            Assert.That(_first.Enters, Is.Zero);
+        }
+
+        [TestCase(0d)]
+        [TestCase(0.05d)]
+        public void ConfiguredTimerTransitionsAfterItsDuration(double duration)
+        {
+            AnimalVarId timerId = CreateTimer(_startObject, _next);
+            _context.State.Vars.Set(timerId, duration);
+            _machine.Initialize(_context, _start);
+            Assert.That(_machine.IsInState(_start), Is.True);
+            if (duration > 0d)
+            {
+                _machine.LifeCycle(0.02f);
+                Assert.That(_machine.IsInState(_start), Is.True);
+            }
+
+            _machine.LifeCycle(0.1f);
+
+            Assert.That(_machine.IsInState(_next), Is.True);
+        }
+
+        [Test]
+        public void TimerValueIsValidatedAgainWhenEnteringState()
+        {
+            AnimalVarId timerId = CreateTimer(_nextProbe.gameObject, _start);
+            _context.State.Vars.Set(timerId, 1d);
+            _machine.Initialize(_context, _start);
+            _context.State.Vars.Remove(timerId);
+
+            Assert.Throws<System.InvalidOperationException>(() => _machine.ForceSwitchState(_next));
+        }
+
+        private AnimalVarId CreateTimer(GameObject node, AnimalStateId nextState)
+        {
+            var timerId = ScriptableObject.CreateInstance<AnimalVarId>();
+            _objects.Add(timerId);
+            var transition = node.AddComponent<AnimalStateSwitchByVariableTimer>();
+            SetField(transition, "_timerId", timerId);
+            SetField(transition, "_nextState", nextState);
+            return timerId;
+        }
+
+        [Test]
         public void ForcedTransitionStopsOldStateTicks()
         {
             _first.TickAction = () => _machine.ForceSwitchState(_next);

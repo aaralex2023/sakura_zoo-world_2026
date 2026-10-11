@@ -20,20 +20,17 @@ namespace ZooWorld.Animals
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
             context.State.RequireState(_nextState);
+            if (_timerId == null)
+                throw new InvalidOperationException($"Timer transition on '{name}' has no timer variable ID. Remove the timer component for an indefinite wait.");
+            GetDuration(context.State);
 
             _state = context.State;
         }
 
         public void OnEnter()
         {
-            _timeRemaining = null;
             _transitionRequested = false;
-            if (_timerId == null || !_state.Vars.TryGet(_timerId, out double duration))
-                return;
-            if (double.IsNaN(duration) || double.IsInfinity(duration))
-                throw new InvalidOperationException($"Animal '{_state.Transform.name}' has an invalid timer value.");
-
-            _timeRemaining = duration;
+            _timeRemaining = GetDuration(_state);
         }
 
         public void OnExit()
@@ -61,6 +58,16 @@ namespace ZooWorld.Animals
             _transitionRequested = false;
             state = _nextState;
             return true;
+        }
+
+        private double GetDuration(AnimalRuntimeState state)
+        {
+            if (!state.Vars.TryGet(_timerId, out double duration))
+                throw new InvalidOperationException($"Animal '{state.Transform.name}' has no value for timer variable '{_timerId.name}' used by state '{name}'.");
+            if (duration < 0d || double.IsNaN(duration) || double.IsInfinity(duration))
+                throw new InvalidOperationException($"Animal '{state.Transform.name}' requires a finite, non-negative value for timer variable '{_timerId.name}' used by state '{name}'.");
+
+            return duration;
         }
     }
 }
