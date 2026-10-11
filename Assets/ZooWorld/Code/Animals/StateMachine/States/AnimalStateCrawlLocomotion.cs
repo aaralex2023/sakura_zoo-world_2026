@@ -16,9 +16,7 @@ namespace ZooWorld.Animals
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
             if (!context.Configs.TryGet(out _config))
                 throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has no CrawlLocomotionConfig.");
-            if (_config.Speed <= 0f || _config.Acceleration <= 0f ||
-                float.IsNaN(_config.Speed) || float.IsInfinity(_config.Speed) ||
-                float.IsNaN(_config.Acceleration) || float.IsInfinity(_config.Acceleration))
+            if (_config.Speed <= 0f || float.IsNaN(_config.Speed) || float.IsInfinity(_config.Speed))
                 throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has invalid crawl locomotion settings.");
 
             _state = context.State;
@@ -35,10 +33,8 @@ namespace ZooWorld.Animals
             heading.Normalize();
 
             Vector3 velocity = _state.Body.linearVelocity;
-            Vector3 currentVelocity = Vector3.ProjectOnPlane(velocity, Vector3.up);
             Vector3 desiredVelocity = heading * _config.Speed;
-            Vector3 nextVelocity = Vector3.MoveTowards(currentVelocity, desiredVelocity, _config.Acceleration * dt);
-            _state.Body.linearVelocity = new Vector3(nextVelocity.x, velocity.y, nextVelocity.z);
+            _state.Body.linearVelocity = new Vector3(desiredVelocity.x, velocity.y, desiredVelocity.z);
             _state.Body.MoveRotation(Quaternion.LookRotation(heading, Vector3.up));
         }
     }
