@@ -542,7 +542,8 @@ GameObject:
   m_Component:
   - component: {fileID: 400006}
   - component: {fileID: 11400023}
-  - component: {fileID: 11400024}
+  - component: {fileID: 11400028}
+  - component: {fileID: 11400029}
   m_Layer: 0
   m_Name: StateFrogJump
   m_TagString: Untagged
@@ -578,7 +579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: {fileID: 11400000, guid: fae924bde1e84ef2adb47789c5411635, type: 2}
---- !u!114 &11400024
+--- !u!114 &11400028
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -587,11 +588,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 100006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94ff5b4c620c42318bf18f0be177c027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waitState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
+  m_Script: {fileID: 11500000, guid: d98e9d3a714d4b10a122688ea52bf682, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+
+--- !u!114 &11400029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a91e3809651b4e7c91c44b9afc8183c1, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _nextState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
   _groundContact: {fileID: 11400006}
+  _minimumJumpDuration: 0.2
+
 --- !u!1 &100007
 GameObject:
   m_ObjectHideFlags: 0
