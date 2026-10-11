@@ -6,7 +6,7 @@ using ZooWorld.World;
 
 namespace ZooWorld.FoodChain
 {
-    public sealed class AnimalCollisionRouter : MonoBehaviour, IAnimalContextUser
+    public sealed class AnimalEncounterHandler : MonoBehaviour, IAnimalContextUser
     {
         private IAnimal _animal;
         private IEncounterResolver _resolver;

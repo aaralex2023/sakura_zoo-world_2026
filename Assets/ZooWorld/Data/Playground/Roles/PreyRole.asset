@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98b55c642f4ee4427b1c2554e0b9bff9, type: 3}
-  m_Name: FrogRole
+  m_Name: PreyRole
   m_EditorClassIdentifier:
-  _displayName: Frog
+  _displayName: Preys
   _canEat: 0
