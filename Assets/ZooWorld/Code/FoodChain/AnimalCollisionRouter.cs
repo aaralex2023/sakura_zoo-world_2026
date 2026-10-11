@@ -40,12 +40,26 @@ namespace ZooWorld.FoodChain
             if (other.IsDead || _animal.Body.GetInstanceID() > other.Body.GetInstanceID())
                 return;
 
-            if (!_resolver.TryResolve(_animal, other, out IAnimal eater, out IAnimal victim) || !victim.TryDie(eater))
+            if (!_resolver.TryResolve(_animal, other, out IAnimal eater, out IAnimal victim))
                 return;
 
-            eater.NotifyAte(victim);
-            victim.NotifyEaten(eater);
-            _despawner.Despawn(victim);
+            try
+            {
+                if (!victim.TryDie(eater))
+                    return;
+
+                eater.NotifyAte(victim);
+                victim.NotifyEaten(eater);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception, this);
+            }
+            finally
+            {
+                if (victim.IsDead)
+                    _despawner.Despawn(victim);
+            }
         }
     }
 }
