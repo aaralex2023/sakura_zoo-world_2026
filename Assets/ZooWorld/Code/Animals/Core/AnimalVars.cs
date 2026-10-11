@@ -22,6 +22,11 @@ namespace ZooWorld.Animals
             _values[id] = value;
         }
 
+        public bool Remove(AnimalVarId id)
+        {
+            return _values.Remove(id);
+        }
+
         public void Add(AnimalVarId id, double delta)
         {
             Set(id, Get(id) + delta);
