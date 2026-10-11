@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 11400003}
   - component: {fileID: 11400004}
   - component: {fileID: 11400005}
+  - component: {fileID: 11400999}
   - component: {fileID: 11400006}
   - component: {fileID: 11400007}
   m_Layer: 6
@@ -160,9 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b59bf535a2e64b838a986ede7ea91f79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _obstacleMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -895,3 +893,20 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 400000}
+--- !u!114 &11400999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb1b62105a32480ea672e88293080a01, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _movementState: {fileID: 11400000, guid: e7807a6144f94673b3e9b3c4a066dbce, type: 2}
+  _waitState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
