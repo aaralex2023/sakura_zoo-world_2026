@@ -58,7 +58,11 @@ namespace ZooWorld.Animals
         public Vector3 ChooseHeading()
         {
             EnsureReady();
-            _hasObstaclePriority = false;
+            if (_hasObstaclePriority)
+            {
+                _hasObstaclePriority = false;
+                return _state.Heading;
+            }
 
             Vector3 position = _state.Transform.position;
             position.y = 0f;
@@ -83,16 +87,6 @@ namespace ZooWorld.Animals
 
             float angle = _random.Range(0f, 360f) * Mathf.Deg2Rad;
             return new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle));
-        }
-
-        public Vector3 ChooseHeadingForJump()
-        {
-            EnsureReady();
-            if (!_hasObstaclePriority)
-                return ChooseHeading();
-
-            _hasObstaclePriority = false;
-            return _state.Heading;
         }
 
         public bool ShouldReturnToScreen()

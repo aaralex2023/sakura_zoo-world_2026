@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 11400011}
   - component: {fileID: 11400012}
   - component: {fileID: 11400013}
+  - component: {fileID: 11400014}
   m_Layer: 0
   m_Name: Config
   m_TagString: Untagged
@@ -280,9 +281,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config:
-    _idleDuration: 1
     _distance: 2
     _airTime: 0.4
+--- !u!114 &11400014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8926deee69a4d469d41394a6a3a74fa, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _config:
+    _duration: 2.5
 --- !u!1 &100002
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +485,7 @@ GameObject:
   - component: {fileID: 11400021}
   - component: {fileID: 11400022}
   m_Layer: 0
-  m_Name: StateFrogIdle
+  m_Name: StateWait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -514,12 +528,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 100005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8266f5c9c3e349029e82a906d134fd43, type: 3}
+  m_Script: {fileID: 11500000, guid: dd0ed54e6f5c40a59fef0b34b7287621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpState: {fileID: 11400000, guid: fae924bde1e84ef2adb47789c5411635, type: 2}
-  _headingSelector: {fileID: 11400005}
-  _groundContact: {fileID: 11400006}
+  _nextState: {fileID: 11400000, guid: 2a89d94b2d9042a299d2fb33c55eeaf5, type: 2}
 --- !u!1 &100006
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ff5b4c620c42318bf18f0be177c027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _idleState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
+  _waitState: {fileID: 11400000, guid: abc36b7c06a642fb8381decd69221c53, type: 2}
   _groundContact: {fileID: 11400006}
 --- !u!1 &100007
 GameObject:
@@ -612,8 +624,69 @@ Transform:
   - {fileID: 400004}
   - {fileID: 400005}
   - {fileID: 400006}
+  - {fileID: 400008}
   m_Father: {fileID: 400000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &100008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400008}
+  - component: {fileID: 11400026}
+  - component: {fileID: 11400027}
+  m_Layer: 0
+  m_Name: StateSelectHeading
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 400007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &11400026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29e8f5fba53547f183ec20912306f67, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _id: {fileID: 11400000, guid: 2a89d94b2d9042a299d2fb33c55eeaf5, type: 2}
+--- !u!114 &11400027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f31edbe061b4e9190da122ee3415328, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _nextState: {fileID: 11400000, guid: fae924bde1e84ef2adb47789c5411635, type: 2}
+  _headingSelector: {fileID: 11400005}
 --- !u!1 &4999636177124201807
 GameObject:
   m_ObjectHideFlags: 0

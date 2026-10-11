@@ -6,7 +6,7 @@ namespace ZooWorld.Animals
     public sealed class AnimalStateJump : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener,
         IAnimalStateExitListener, IAnimalStateTickListener, IAnimalStatePredictor
     {
-        [SerializeField] private AnimalStateId _idleState;
+        [SerializeField] private AnimalStateId _waitState;
         [SerializeField] private AnimalGroundContact _groundContact;
 
         private AnimalRuntimeState _state;
@@ -20,8 +20,8 @@ namespace ZooWorld.Animals
                 throw new ArgumentNullException(nameof(context));
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
-            if (_idleState == null)
-                throw new InvalidOperationException($"'{name}' has no Idle state ID.");
+            if (_waitState == null)
+                throw new InvalidOperationException($"'{name}' has no Wait state ID.");
             if (_groundContact == null)
                 throw new InvalidOperationException($"'{name}' has no ground contact reference.");
             if (!context.Configs.TryGet(out _config))
@@ -88,7 +88,7 @@ namespace ZooWorld.Animals
                 return false;
 
             _landed = false;
-            state = _idleState;
+            state = _waitState;
             return true;
         }
     }
