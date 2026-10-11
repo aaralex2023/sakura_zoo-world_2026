@@ -16,13 +16,9 @@ namespace ZooWorld.Animals
         private IRandom _random;
         private AnimalRuntimeState _state;
         private ScreenReturnConfig _screenReturnConfig;
-        private bool _isReturning;
-        private Vector3 _returnTarget;
         private bool _hasObstaclePriority;
         private Collider _lastObstacleCollider;
         private Vector3 _lastObstacleNormal;
-
-        public bool IsReturning => _isReturning;
 
         [Inject]
         private void Construct(IScreenBounds screenBounds, IRandom random)
@@ -66,36 +62,15 @@ namespace ZooWorld.Animals
 
             Vector3 position = _state.Transform.position;
             position.y = 0f;
-            if (_isReturning)
+            if (!_screenBounds.Contains(position, _screenReturnConfig.InsideMargin))
             {
-                if (_screenBounds.Contains(position, _screenReturnConfig.InsideMargin))
-                    _isReturning = false;
-                else
-                {
-                    if (!_screenBounds.Contains(_returnTarget, _screenReturnConfig.InsideMargin))
-                        _returnTarget = _screenBounds.RandomPoint(_screenReturnConfig.InsideMargin);
-                    return DirectionTo(_returnTarget - position);
-                }
-            }
-
-            if (!_screenBounds.Contains(position, _screenReturnConfig.OutsideMargin))
-            {
-                _isReturning = true;
-                _returnTarget = _screenBounds.RandomPoint(_screenReturnConfig.InsideMargin);
-                return DirectionTo(_returnTarget - position);
+                Rect area = _screenBounds.Area;
+                Vector3 screenCenter = new Vector3(area.center.x, 0f, area.center.y);
+                return DirectionTo(screenCenter - position);
             }
 
             float angle = _random.Range(0f, 360f) * Mathf.Deg2Rad;
             return new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle));
-        }
-
-        public bool ShouldReturnToScreen()
-        {
-            EnsureReady();
-            if (_isReturning)
-                return !_screenBounds.Contains(_state.Transform.position, _screenReturnConfig.InsideMargin);
-
-            return !_screenBounds.Contains(_state.Transform.position, _screenReturnConfig.OutsideMargin);
         }
 
         private void OnCollisionEnter(Collision collision)

@@ -3,15 +3,10 @@ using UnityEngine;
 
 namespace ZooWorld.Animals
 {
-    public sealed class AnimalStateCrawlLocomotion : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener,
-        IAnimalStateExitListener, IAnimalStateTickListener, IAnimalStatePredictor
+    public sealed class AnimalStateCrawlLocomotion : MonoBehaviour, IAnimalContextUser, IAnimalStateTickListener
     {
-        [SerializeField] private AnimalStateId _waitState;
-        [SerializeField] private AnimalHeadingSelector _headingSelector;
-
         private AnimalRuntimeState _state;
         private CrawlLocomotionConfig _config;
-        private bool _transitionRequested;
 
         public void SetupContext(AnimalContext context)
         {
@@ -19,10 +14,6 @@ namespace ZooWorld.Animals
                 throw new ArgumentNullException(nameof(context));
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
-            if (_waitState == null)
-                throw new InvalidOperationException($"'{name}' has no Wait state ID.");
-            if (_headingSelector == null)
-                throw new InvalidOperationException($"'{name}' has no heading selector reference.");
             if (!context.Configs.TryGet(out _config))
                 throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has no CrawlLocomotionConfig.");
             if (_config.Speed <= 0f || _config.Acceleration <= 0f ||
@@ -33,19 +24,9 @@ namespace ZooWorld.Animals
             _state = context.State;
         }
 
-        public void OnEnter()
-        {
-            _transitionRequested = false;
-        }
-
-        public void OnExit()
-        {
-            _transitionRequested = false;
-        }
-
         public void OnTick(float dt)
         {
-            if (_state.IsDead || _transitionRequested)
+            if (_state.IsDead)
                 return;
 
             Vector3 heading = Vector3.ProjectOnPlane(_state.Heading, Vector3.up);
@@ -59,20 +40,6 @@ namespace ZooWorld.Animals
             Vector3 nextVelocity = Vector3.MoveTowards(currentVelocity, desiredVelocity, _config.Acceleration * dt);
             _state.Body.linearVelocity = new Vector3(nextVelocity.x, velocity.y, nextVelocity.z);
             _state.Body.MoveRotation(Quaternion.LookRotation(heading, Vector3.up));
-
-            if (_headingSelector.ShouldReturnToScreen() != _headingSelector.IsReturning)
-                _transitionRequested = true;
-        }
-
-        public bool TryPopNextState(out AnimalStateId state)
-        {
-            state = null;
-            if (_state == null || _state.IsDead || !_transitionRequested)
-                return false;
-
-            _transitionRequested = false;
-            state = _waitState;
-            return true;
         }
     }
 }
