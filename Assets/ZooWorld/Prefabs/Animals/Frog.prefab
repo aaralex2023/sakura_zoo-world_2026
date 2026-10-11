@@ -263,7 +263,7 @@ MonoBehaviour:
   _config:
     _groundMask:
       serializedVersion: 2
-      m_Bits: 128
+      m_Bits: 384
     _minGroundNormalY: 0.6
 --- !u!114 &11400013
 MonoBehaviour:
