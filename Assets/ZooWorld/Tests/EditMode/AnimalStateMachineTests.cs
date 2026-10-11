@@ -30,7 +30,7 @@ namespace ZooWorld.Tests
             Collider collider = root.AddComponent<BoxCollider>();
             AnimalConfigProvider configs = root.AddComponent<AnimalConfigProvider>();
             AnimalRuntimeState runtime = new(root.transform, body, collider, new AnimalVars(),
-                _machine.IsInState, _machine.ForceSwitchState);
+                _machine.IsInState, _machine.ForceSwitchState, _machine.RequireState);
             _context = new AnimalContext(animal, runtime, configs);
             _startObject = CreateState(root, out _start);
             GameObject nextObject = CreateState(root, out _next);
@@ -47,6 +47,41 @@ namespace ZooWorld.Tests
             foreach (Object instance in _objects)
                 Object.DestroyImmediate(instance);
             _objects.Clear();
+        }
+
+        [TestCase(typeof(AnimalStateSelectHeading))]
+        [TestCase(typeof(AnimalStateSwitchByVariableTimer))]
+        [TestCase(typeof(AnimalStateSwitchByVarFlag))]
+        [TestCase(typeof(AnimalStateSwitchIfGrounded))]
+        [TestCase(typeof(AnimalStateSwitchIfOutOfScreen))]
+        public void UnregisteredTransitionTargetFailsBeforeEnteringStartState(System.Type componentType)
+        {
+            AnimalStateId missing = ScriptableObject.CreateInstance<AnimalStateId>();
+            missing.name = "MissingTarget";
+            _objects.Add(missing);
+            Component transition = _startObject.AddComponent(componentType);
+            SetField(transition, "_nextState", missing);
+
+            var exception = Assert.Throws<System.InvalidOperationException>(() => _machine.Initialize(_context, _start));
+
+            Assert.That(exception.Message, Does.Contain("MissingTarget"));
+            Assert.That(_first.Enters, Is.Zero);
+        }
+
+        [Test]
+        public void TransitionCanReferenceNodePreparedLater()
+        {
+            var flag = ScriptableObject.CreateInstance<AnimalVarId>();
+            _objects.Add(flag);
+            var transition = _startObject.AddComponent<AnimalStateSwitchByVarFlag>();
+            SetField(transition, "_flagId", flag);
+            SetField(transition, "_nextState", _next);
+
+            _machine.Initialize(_context, _start);
+            _context.State.Vars.Set(flag, 0d);
+            _machine.LifeCycle(0.02f);
+
+            Assert.That(_machine.IsInState(_next), Is.True);
         }
 
         [Test]

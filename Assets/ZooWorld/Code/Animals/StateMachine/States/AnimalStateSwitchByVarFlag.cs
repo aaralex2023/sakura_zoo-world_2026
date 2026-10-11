@@ -17,8 +17,9 @@ namespace ZooWorld.Animals
                 throw new ArgumentNullException(nameof(context));
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
-            if (_flagId == null || _nextState == null)
-                throw new InvalidOperationException($"'{name}' requires a variable flag and a next state.");
+            context.State.RequireState(_nextState);
+            if (_flagId == null)
+                throw new InvalidOperationException($"'{name}' requires a variable flag.");
 
             _state = context.State;
         }

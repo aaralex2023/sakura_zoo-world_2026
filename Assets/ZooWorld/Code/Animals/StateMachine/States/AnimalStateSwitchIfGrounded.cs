@@ -20,8 +20,7 @@ namespace ZooWorld.Animals
                 throw new ArgumentNullException(nameof(context));
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
-            if (_nextState == null)
-                throw new InvalidOperationException($"'{name}' has no next state ID.");
+            context.State.RequireState(_nextState);
             if (_groundContact == null)
                 throw new InvalidOperationException($"'{name}' has no ground contact reference.");
             if (_minimumJumpDuration < 0f || float.IsNaN(_minimumJumpDuration) || float.IsInfinity(_minimumJumpDuration))

@@ -68,7 +68,8 @@ namespace ZooWorld.Animals
                     collider,
                     _vars,
                     IsInState,
-                    ForceSwitchState);
+                    ForceSwitchState,
+                    _stateMachine.RequireState);
                 AnimalContext context = new(this, _runtimeState, _configs);
 
                 _dispatcher.Init(context);

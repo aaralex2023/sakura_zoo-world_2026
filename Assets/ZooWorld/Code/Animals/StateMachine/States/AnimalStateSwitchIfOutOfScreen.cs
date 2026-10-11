@@ -28,10 +28,9 @@ namespace ZooWorld.Animals
                 throw new ArgumentNullException(nameof(context));
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
+            context.State.RequireState(_nextState);
             if (_screenBounds == null)
                 throw new InvalidOperationException($"'{name}' has no injected screen bounds.");
-            if (_nextState == null)
-                throw new InvalidOperationException($"'{name}' has no next state ID.");
             if (!context.Configs.TryGet(out _config))
                 throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has no ScreenReturnConfig.");
 

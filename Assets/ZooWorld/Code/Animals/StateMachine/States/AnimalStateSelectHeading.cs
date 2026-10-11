@@ -18,8 +18,7 @@ namespace ZooWorld.Animals
                 throw new ArgumentNullException(nameof(context));
             if (_state != null)
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
-            if (_nextState == null)
-                throw new InvalidOperationException($"'{name}' has no next state ID.");
+            context.State.RequireState(_nextState);
             if (_headingSelector == null)
                 throw new InvalidOperationException($"'{name}' has no heading selector reference.");
 

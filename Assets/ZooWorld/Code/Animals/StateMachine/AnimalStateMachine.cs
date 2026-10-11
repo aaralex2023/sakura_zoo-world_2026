@@ -64,6 +64,15 @@ namespace ZooWorld.Animals
             SwitchTo(nextState);
         }
 
+        // Available during node preparation, after all state IDs have been registered.
+        public void RequireState(AnimalStateId state)
+        {
+            if (state == null)
+                throw new InvalidOperationException($"State machine '{name}' has a transition with no target state.");
+            if (!_nodes.ContainsKey(state))
+                throw new InvalidOperationException($"State machine '{name}' has no node for transition target '{state.name}'.");
+        }
+
         public bool IsInState(AnimalStateId state)
         {
             EnsureInitialized();
