@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace ZooWorld.Animals
 {
@@ -7,10 +8,15 @@ namespace ZooWorld.Animals
         IAnimalStatePredictor
     {
         [SerializeField] private AnimalStateId _nextState;
-        [SerializeField] private AnimalHeadingSelector _headingSelector;
-
+        private AnimalHeadingSelector _headingSelector;
         private AnimalRuntimeState _state;
         private bool _transitionRequested;
+
+        [Inject]
+        private void Construct(AnimalHeadingSelector headingSelector)
+        {
+            _headingSelector = headingSelector ?? throw new ArgumentNullException(nameof(headingSelector));
+        }
 
         public void SetupContext(AnimalContext context)
         {
@@ -20,7 +26,7 @@ namespace ZooWorld.Animals
                 throw new InvalidOperationException($"'{name}' received animal context more than once.");
             context.State.RequireState(_nextState);
             if (_headingSelector == null)
-                throw new InvalidOperationException($"'{name}' has no heading selector reference.");
+                throw new InvalidOperationException($"'{name}' has no injected heading selector.");
 
             _state = context.State;
         }
@@ -30,7 +36,7 @@ namespace ZooWorld.Animals
             if (_state.IsDead)
                 return;
 
-            _state.Heading = _headingSelector.ChooseHeading();
+            _state.Heading = _headingSelector.ChooseHeading(_state.Transform.position);
             _transitionRequested = true;
         }
 

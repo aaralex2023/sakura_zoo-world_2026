@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using Zenject;
+using ZooWorld.Animals;
 using ZooWorld.FoodChain;
 using ZooWorld.UI;
 using ZooWorld.World;
@@ -32,6 +33,7 @@ namespace ZooWorld.Bootstrap
             Container.DeclareSignal<AnimalDiedSignal>();
 
             Container.Bind<IRandom>().To<UnityRandom>().AsSingle();
+            Container.Bind<AnimalHeadingSelector>().AsSingle();
             Container.Bind<IEncounterResolver>().To<EncounterResolver>().AsSingle();
             Container.BindInterfacesTo<CameraScreenBounds>().AsSingle().WithArguments(_camera);
             Container.Bind<IAnimalFactory>().To<AnimalFactory>().AsSingle().WithArguments(_animalsRoot);

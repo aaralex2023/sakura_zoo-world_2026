@@ -1,58 +1,40 @@
 using System;
 using UnityEngine;
-using Zenject;
 using ZooWorld.World;
 
 namespace ZooWorld.Animals
 {
-    public sealed class AnimalHeadingSelector : MonoBehaviour, IAnimalContextUser
+    public sealed class AnimalHeadingSelector
     {
         private const float DirectionEpsilon = 0.0001f;
 
         private IScreenBounds _screenBounds;
         private IRandom _random;
-        private AnimalRuntimeState _state;
         private ScreenReturnConfig _screenReturnConfig;
 
-        [Inject]
-        private void Construct(IScreenBounds screenBounds, IRandom random)
+        public AnimalHeadingSelector(IScreenBounds screenBounds, IRandom random, ScreenReturnConfig screenReturnConfig)
         {
             _screenBounds = screenBounds ?? throw new ArgumentNullException(nameof(screenBounds));
             _random = random ?? throw new ArgumentNullException(nameof(random));
-        }
-
-        public void SetupContext(AnimalContext context)
-        {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
-            if (_state != null)
-                throw new InvalidOperationException($"'{name}' received animal context more than once.");
-            if (_screenBounds == null || _random == null)
-                throw new InvalidOperationException($"'{name}' has no injected screen bounds or random source.");
-            if (!context.Configs.TryGet(out _screenReturnConfig))
-                throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has no ScreenReturnConfig.");
+            _screenReturnConfig = screenReturnConfig ?? throw new ArgumentNullException(nameof(screenReturnConfig));
             if (float.IsNaN(_screenReturnConfig.OutsideMargin) || float.IsInfinity(_screenReturnConfig.OutsideMargin) ||
                 float.IsNaN(_screenReturnConfig.InsideMargin) || float.IsInfinity(_screenReturnConfig.InsideMargin) ||
                 _screenReturnConfig.InsideMargin < _screenReturnConfig.OutsideMargin)
-                throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has invalid screen return margins.");
+                throw new InvalidOperationException("Screen return settings have invalid margins.");
             Rect area = _screenBounds.Area;
             if (area.width <= 2f * _screenReturnConfig.InsideMargin ||
                 area.height <= 2f * _screenReturnConfig.InsideMargin)
-                throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has screen return margins that leave no interior area.");
-
-            _state = context.State;
+                throw new InvalidOperationException("Screen return margins leave no interior area.");
         }
 
-        public Vector3 ChooseHeading()
+        public Vector3 ChooseHeading(Vector3 from)
         {
-            EnsureReady();
-            Vector3 position = _state.Transform.position;
-            position.y = 0f;
-            if (!_screenBounds.Contains(position, _screenReturnConfig.InsideMargin))
+            from.y = 0f;
+            if (!_screenBounds.Contains(from, _screenReturnConfig.InsideMargin))
             {
                 Rect area = _screenBounds.Area;
                 Vector3 screenCenter = new Vector3(area.center.x, 0f, area.center.y);
-                return DirectionTo(screenCenter - position);
+                return DirectionTo(screenCenter - from);
             }
 
             float angle = _random.Range(0f, 360f) * Mathf.Deg2Rad;
@@ -63,12 +45,6 @@ namespace ZooWorld.Animals
         {
             direction.y = 0f;
             return direction.sqrMagnitude > DirectionEpsilon ? direction.normalized : Vector3.forward;
-        }
-
-        private void EnsureReady()
-        {
-            if (_state == null || _screenBounds == null || _random == null || _screenReturnConfig == null)
-                throw new InvalidOperationException($"'{name}' has not been initialized.");
         }
     }
 }
