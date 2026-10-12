@@ -16,3 +16,6 @@ MonoBehaviour:
   _animalCatalog: {fileID: 11400000, guid: 59ff377afb9c4269bcba5b1ee797a574, type: 2}
   _foodChainSettings: {fileID: 11400000, guid: 943dd8a45b214d728abf2454e1088667, type: 2}
   _deathCounterSettings: {fileID: 11400000, guid: a62c38fb51284fb2984d942375172338, type: 2}
+  _screenReturnConfig:
+    _outsideMargin: -0.5
+    _insideMargin: 1.5

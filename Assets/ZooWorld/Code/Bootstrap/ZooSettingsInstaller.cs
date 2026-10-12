@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Zenject;
+using ZooWorld.Animals;
 using ZooWorld.FoodChain;
 using ZooWorld.UI;
 using ZooWorld.World;
@@ -14,6 +15,7 @@ namespace ZooWorld.Bootstrap
         [SerializeField] private AnimalCatalog _animalCatalog;
         [SerializeField] private FoodChainSettings _foodChainSettings;
         [SerializeField] private DeathCounterSettings _deathCounterSettings;
+        [SerializeField] private ScreenReturnConfig _screenReturnConfig = new();
 
         public override void InstallBindings()
         {
@@ -25,11 +27,14 @@ namespace ZooWorld.Bootstrap
                 throw new InvalidOperationException($"{nameof(ZooSettingsInstaller)} has no FoodChainSettings asset.");
             if (_deathCounterSettings == null)
                 throw new InvalidOperationException($"{nameof(ZooSettingsInstaller)} has no DeathCounterSettings asset.");
+            if (_screenReturnConfig == null)
+                throw new InvalidOperationException($"{nameof(ZooSettingsInstaller)} has no ScreenReturnConfig.");
 
             Container.BindInstance(_spawnSettings).AsSingle();
             Container.BindInstance(_animalCatalog).AsSingle();
             Container.BindInstance(_foodChainSettings).AsSingle();
             Container.BindInstance(_deathCounterSettings).AsSingle();
+            Container.BindInstance(_screenReturnConfig).AsSingle();
             Container.BindInterfacesAndSelfTo<DeathCounterModel>().AsSingle();
         }
     }
