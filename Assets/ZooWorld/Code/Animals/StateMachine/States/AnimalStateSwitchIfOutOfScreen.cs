@@ -17,9 +17,10 @@ namespace ZooWorld.Animals
         private bool _transitionRequested;
 
         [Inject]
-        private void Construct(IScreenBounds screenBounds)
+        private void Construct(IScreenBounds screenBounds, ScreenReturnConfig config)
         {
             _screenBounds = screenBounds ?? throw new ArgumentNullException(nameof(screenBounds));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public void SetupContext(AnimalContext context)
@@ -31,8 +32,8 @@ namespace ZooWorld.Animals
             context.State.RequireState(_nextState);
             if (_screenBounds == null)
                 throw new InvalidOperationException($"'{name}' has no injected screen bounds.");
-            if (!context.Configs.TryGet(out _config))
-                throw new InvalidOperationException($"Animal '{context.Animal.Transform.name}' has no ScreenReturnConfig.");
+            if (_config == null)
+                throw new InvalidOperationException($"'{name}' has no injected screen return settings.");
 
             _state = context.State;
         }
