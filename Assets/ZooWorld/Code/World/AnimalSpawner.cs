@@ -6,15 +6,17 @@ namespace ZooWorld.World
 {
     public sealed class AnimalSpawner : IInitializable, ITickable
     {
-        private const int SpawnPositionAttempts = 5;
+        private const int SpawnPositionAttempts = 10;
 
         private readonly AnimalCatalog _catalog;
         private readonly SpawnSettings _settings;
         private readonly IScreenBounds _screenBounds;
         private readonly IAnimalFactory _factory;
         private readonly IRandom _random;
+        private Vector3 _lastSpawnPosition;
         private float _timeUntilSpawn;
         private bool _isInitialized;
+        private bool _hasLastSpawnPosition;
 
         public AnimalSpawner(
             AnimalCatalog catalog,
@@ -70,21 +72,45 @@ namespace ZooWorld.World
         private void TrySpawn()
         {
             AnimalDefinition definition = _catalog.PickWeighted(_random);
+            Vector3 position = default;
+            bool foundClearPosition = false;
             for (int attempt = 0; attempt < SpawnPositionAttempts; attempt++)
             {
-                Vector3 position = _screenBounds.RandomPoint(_settings.SpawnInset);
+                position = _screenBounds.RandomPoint(_settings.SpawnInset);
                 position.y = _settings.SpawnHeight;
-                if (Physics.CheckSphere(
-                        position,
-                        definition.SpawnRadius,
-                        _settings.BlockingMask,
-                        QueryTriggerInteraction.Ignore))
+                if (IsSpawnPositionBlocked(position, definition))
                     continue;
 
-                Quaternion rotation = Quaternion.Euler(0f, _random.Range(0f, 360f), 0f);
-                _factory.Create(definition, position, rotation);
-                return;
+                foundClearPosition = true;
+                break;
             }
+
+            if (!foundClearPosition)
+            {
+                if (!_hasLastSpawnPosition || IsSpawnPositionBlocked(_lastSpawnPosition, definition))
+                {
+                    Debug.LogError($"Could not find a clear spawn position after {SpawnPositionAttempts} attempts or at the previous spawn position.");
+                    return;
+                }
+
+                position = _lastSpawnPosition;
+            }
+
+            Quaternion rotation = Quaternion.Euler(0f, _random.Range(0f, 360f), 0f);
+            if (_factory.Create(definition, position, rotation) != null)
+            {
+                _lastSpawnPosition = position;
+                _hasLastSpawnPosition = true;
+            }
+        }
+
+        private bool IsSpawnPositionBlocked(Vector3 position, AnimalDefinition definition)
+        {
+            return Physics.CheckSphere(
+                position,
+                definition.SpawnRadius,
+                _settings.BlockingMask,
+                QueryTriggerInteraction.Ignore);
         }
     }
 }
