@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalStateMachine : MonoBehaviour
     {
+        [InfoBox("Runs the active state lifecycle and applies requested transitions.\nPlace state nodes beneath this controller; its entire hierarchy is searched.\nUse unique state IDs and include nodes for the animal's start state and this controller's dead state.\nAttach each state's behaviors to the same GameObject as its node.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalStateId _deadState;
 
         private readonly Dictionary<AnimalStateId, AnimalStateNode> _nodes = new();

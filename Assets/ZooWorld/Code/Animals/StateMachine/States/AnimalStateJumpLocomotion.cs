@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalStateJumpLocomotion : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener
     {
+        [InfoBox("Launches a jump along the current heading on state entry, using the configured distance and air time.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private AnimalRuntimeState _state;
         private JumpLocomotionConfig _config;
 

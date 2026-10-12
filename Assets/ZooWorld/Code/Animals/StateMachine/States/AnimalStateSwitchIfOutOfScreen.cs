@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using Zenject;
@@ -8,6 +9,9 @@ namespace ZooWorld.Animals
     public sealed class AnimalStateSwitchIfOutOfScreen : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener,
         IAnimalStateExitListener, IAnimalStateTickListener, IAnimalStatePredictor
     {
+        [InfoBox("Requests the next state when the animal leaves the configured screen boundary.\nOnly activates if the animal starts this state inside the screen.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalStateId _nextState;
 
         private IScreenBounds _screenBounds;

@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalComponentDispatcher : MonoBehaviour, IAnimalComponentDispatcher
     {
+        [InfoBox("Initializes reactors and forwards eating and being-eaten events.\nAssign a reactor root; place enabled reactors on it or its active direct children.\nDeeper descendants are not searched.\nAssign to the animal; use a dedicated reactor root directly beneath the animal.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private GameObject _root;
 
         private IAnimalContextUser[] _contextUsers = Array.Empty<IAnimalContextUser>();

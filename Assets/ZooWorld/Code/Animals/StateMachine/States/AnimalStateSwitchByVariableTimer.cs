@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace ZooWorld.Animals
     public sealed class AnimalStateSwitchByVariableTimer : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener,
         IAnimalStateExitListener, IAnimalStateTickListener, IAnimalStatePredictor
     {
+        [InfoBox("Reads a duration from the selected variable on state entry and requests the next state when it expires.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalStateId _nextState;
         [SerializeField] private AnimalVarId _timerId;
 

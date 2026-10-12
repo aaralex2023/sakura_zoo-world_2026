@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalStateStopVelocityOnExit : MonoBehaviour, IAnimalContextUser, IAnimalStateExitListener
     {
+        [InfoBox("Clears linear and angular velocity when the state ends.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private AnimalRuntimeState _state;
 
         public void SetupContext(AnimalContext context)

@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using Zenject;
@@ -7,6 +8,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalIncrementVarOnAte : MonoBehaviour, IAnimalContextUser, IAnimalAteListener
     {
+        [InfoBox("Increases the food-chain rank variable by one whenever this animal eats another animal.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private IAnimal _animal;
         private AnimalVarId _rankVar;
 

@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using Zenject;
@@ -11,6 +12,9 @@ namespace ZooWorld.Bootstrap
     [CreateAssetMenu(menuName = "ZooWorld/Installers/Settings")]
     public sealed class ZooSettingsInstaller : ScriptableObjectInstaller
     {
+        [InfoBox("Registers shared spawning, catalog, food-chain, death-counter, and screen-return settings.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private SpawnSettings _spawnSettings;
         [SerializeField] private AnimalCatalog _animalCatalog;
         [SerializeField] private FoodChainSettings _foodChainSettings;

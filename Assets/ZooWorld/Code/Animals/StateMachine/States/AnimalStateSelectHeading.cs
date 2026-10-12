@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using Zenject;
@@ -7,6 +8,9 @@ namespace ZooWorld.Animals
     public sealed class AnimalStateSelectHeading : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener,
         IAnimalStatePredictor
     {
+        [InfoBox("Chooses a random heading inside the inner screen area, or heads toward the center near the edges.\nThen requests the configured next state.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalStateId _nextState;
         private AnimalHeadingSelector _headingSelector;
         private AnimalRuntimeState _state;

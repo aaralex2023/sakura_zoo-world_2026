@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using Zenject;
@@ -7,6 +8,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalShowLabelOnAte : MonoBehaviour, IAnimalContextUser, IAnimalAteListener
     {
+        [InfoBox("Shows the configured floating label at the assigned anchor whenever this animal eats another animal.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private Transform _labelAnchor;
 
         private IFloatingLabelService _labelService;

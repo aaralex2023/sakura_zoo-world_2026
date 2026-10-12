@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using TMPro;
 using UnityEngine;
@@ -11,6 +12,9 @@ namespace ZooWorld.Bootstrap
 {
     public sealed class ZooSceneInstaller : MonoInstaller
     {
+        [InfoBox("Registers scene services for spawning, encounters, screen bounds, and UI.\nAssign the camera, animals root, death counter view, and Screen Space Overlay labels canvas.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private Camera _camera;
         [SerializeField] private Transform _animalsRoot;
         [SerializeField] private DeathCounterView _deathCounterView;

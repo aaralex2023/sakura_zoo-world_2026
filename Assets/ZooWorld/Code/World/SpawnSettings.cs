@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace ZooWorld.World
@@ -5,6 +6,9 @@ namespace ZooWorld.World
     [CreateAssetMenu(menuName = "ZooWorld/Settings/Spawn")]
     public sealed class SpawnSettings : ScriptableObject
     {
+        [InfoBox("Defines spawn intervals, screen inset, spawn height, and layers that block spawning.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private Vector2 _intervalRange = new(1f, 2f);
         [SerializeField] private float _spawnInset = 1f;
         [SerializeField] private float _spawnHeight = 0.5f;

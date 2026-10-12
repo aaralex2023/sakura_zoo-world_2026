@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalGroundContact : MonoBehaviour, IAnimalContextUser
     {
+        [InfoBox("Tracks ground contact using the configured ground layers and minimum upward contact normal.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private readonly HashSet<Collider> _groundColliders = new();
         private AnimalRuntimeState _state;
         private GroundContactConfig _config;

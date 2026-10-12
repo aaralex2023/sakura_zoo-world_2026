@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalStateDisablePhysicsOnEnter : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener
     {
+        [InfoBox("Clears velocity, disables the animal's collider, and makes its Rigidbody kinematic on state entry.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private AnimalRuntimeState _state;
 
         public void SetupContext(AnimalContext context)

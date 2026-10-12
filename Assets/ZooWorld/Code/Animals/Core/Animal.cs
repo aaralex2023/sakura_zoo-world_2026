@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using Zenject;
@@ -7,6 +8,9 @@ namespace ZooWorld.Animals
 {
     public sealed class Animal : MonoBehaviour, IAnimal
     {
+        [InfoBox("Initializes configs, variables, reactors, and states; handles death and eating events.\nPlace on the prefab root with a Collider; assign its Rigidbody, controllers, provider, and start state.\nPlace general context behaviors on the root or direct children, outside the reactor root.\nKeep state behaviors on state nodes and configs on the provider's assigned config GameObject.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalStateMachine _stateMachine;
         [SerializeField] private AnimalComponentDispatcher _dispatcher;
         [SerializeField] private AnimalConfigProvider _configs;

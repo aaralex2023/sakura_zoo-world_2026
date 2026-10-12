@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalConfigProvider : MonoBehaviour, IAnimalConfigProvider
     {
+        [InfoBox("Collects animal configs and provides access by config type.\nAssign a config GameObject and attach all config components directly to it.\nKeep that object active and its config components enabled; child objects are not searched.\nUse one component per config type and assign this provider to the animal.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private GameObject _configsRoot;
 
         private readonly Dictionary<Type, IAnimalConfig> _configs = new();

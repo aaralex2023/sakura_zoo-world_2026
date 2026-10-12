@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,9 @@ namespace ZooWorld.UI
 {
     public sealed class FloatingLabelView : MonoBehaviour
     {
+        [InfoBox("Follows a world anchor on screen, fades over its lifetime, and destroys itself when finished.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private TMP_Text _label;
         private CanvasGroup _canvasGroup;
         private Camera _camera;

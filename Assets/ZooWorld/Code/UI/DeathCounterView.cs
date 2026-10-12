@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,9 @@ namespace ZooWorld.UI
 {
     public sealed class DeathCounterView : MonoBehaviour
     {
+        [InfoBox("Creates a UI panel with one death counter per configured food-chain role and displays count updates.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private readonly Dictionary<FoodChainRoleId, TMP_Text> _labels = new();
         private bool _isInitialized;
 

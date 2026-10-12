@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 using Zenject;
@@ -8,6 +9,9 @@ namespace ZooWorld.FoodChain
 {
     public sealed class AnimalEncounterHandler : MonoBehaviour, IAnimalContextUser
     {
+        [InfoBox("Resolves animal collisions into eating events, notifies both animals, and despawns the victim.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private IAnimal _animal;
         private IEncounterResolver _resolver;
         private IAnimalDespawner _despawner;

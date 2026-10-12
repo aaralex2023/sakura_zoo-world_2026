@@ -4,6 +4,7 @@
   "references": [
     "Zenject",
     "Unity.TextMeshPro",
-    "Unity.ugui"
+    "Unity.ugui",
+    "NaughtyAttributes.Core"
   ]
 }

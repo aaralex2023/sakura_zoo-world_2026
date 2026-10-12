@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalStateWait : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener
     {
+        [InfoBox("Stops horizontal movement and rotation on state entry, preserving vertical velocity.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private AnimalRuntimeState _state;
 
         public void SetupContext(AnimalContext context)

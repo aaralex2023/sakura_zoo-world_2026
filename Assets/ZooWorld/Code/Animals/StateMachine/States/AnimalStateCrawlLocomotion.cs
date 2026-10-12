@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalStateCrawlLocomotion : MonoBehaviour, IAnimalContextUser, IAnimalStateTickListener
     {
+        [InfoBox("Moves and turns along the current heading while this state is active, preserving vertical velocity.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         private AnimalRuntimeState _state;
         private CrawlLocomotionConfig _config;
 

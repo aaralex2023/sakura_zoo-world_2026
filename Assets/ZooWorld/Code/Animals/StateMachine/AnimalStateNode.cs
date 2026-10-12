@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalStateNode : MonoBehaviour
     {
+        [InfoBox("Groups behaviors and transition conditions for one state.\nPlace beneath the animal's state machine and assign a unique state ID.\nAttach enabled state behaviors directly to this GameObject; child behaviors are not collected.\nIf components request different transitions, the first component's request wins.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalStateId _id;
 
         private IAnimalStateEnterListener[] _enterListeners = Array.Empty<IAnimalStateEnterListener>();

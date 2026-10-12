@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace ZooWorld.Animals
     public sealed class AnimalStateSwitchByVarFlag : MonoBehaviour, IAnimalContextUser,
         IAnimalStateEnterListener, IAnimalStatePredictor
     {
+        [InfoBox("Clears the selected flag on state entry, then consumes it and requests the next state when it appears again.\nThe flag's presence triggers the transition, regardless of its value.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalVarId _flagId;
         [SerializeField] private AnimalStateId _nextState;
 

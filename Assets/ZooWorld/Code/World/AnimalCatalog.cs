@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ namespace ZooWorld.World
     [CreateAssetMenu(menuName = "ZooWorld/Animal Catalog")]
     public sealed class AnimalCatalog : ScriptableObject
     {
+        [InfoBox("Lists the animal definitions available for spawning.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private List<AnimalDefinition> _animals = new();
 
         public AnimalDefinition PickWeighted(IRandom random)

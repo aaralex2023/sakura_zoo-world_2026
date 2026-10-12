@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace ZooWorld.Animals
     public sealed class AnimalStateSwitchIfGrounded : MonoBehaviour, IAnimalContextUser, IAnimalStateEnterListener,
         IAnimalStateExitListener, IAnimalStateTickListener, IAnimalStatePredictor
     {
+        [InfoBox("Requests the next state when ground contact is detected after the minimum time in this state.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private AnimalStateId _nextState;
         [SerializeField] private AnimalGroundContact _groundContact;
         [SerializeField] private float _minimumJumpDuration = 0.2f;

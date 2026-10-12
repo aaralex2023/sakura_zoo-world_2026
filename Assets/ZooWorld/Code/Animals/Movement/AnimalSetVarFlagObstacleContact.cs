@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ namespace ZooWorld.Animals
 {
     public sealed class AnimalSetVarFlagObstacleContact : MonoBehaviour, IAnimalContextUser
     {
+        [InfoBox("Creates the selected variable flag with value zero when an obstacle contact opposes the current heading.")]
+        [SerializeField, ReadOnly] private bool _about;
+
         [SerializeField] private LayerMask _obstacleMask = 1 << 8;
         [SerializeField] private AnimalVarId _flagId;
 
